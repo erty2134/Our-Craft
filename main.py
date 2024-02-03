@@ -3,13 +3,21 @@
 
 import sys
 import discord
+import os
+from dotenv import find_dotenv, load_dotenv
 
 
+def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
 
-def main(argv: "list", argc: "int", *args:"any", **kwargs:"any") -> None:
+    # load up the env
+    envPath = find_dotenv();
+    load_dotenv(envPath);
+    TOKEN = os.getenv("ENV_TOKEN");
+
+
     client = discord.Client(intents=discord.Intents.default());
 
-    client.run("MTIwMzEzMTQ1MjM1MTU3ODEzMw.GS8r95.WNmzTab7qBshJvVrsb5XaPKzUlVR1xDB3u1g5E");
+    client.run(TOKEN);
 
 
 if __name__ == "__main__": main(sys.argv[1:], len(sys.argv[1:]));
