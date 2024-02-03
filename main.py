@@ -6,7 +6,7 @@ import discord
 
 
 
-def main(argv, argc, *args, **kwargs) -> None:
+def main(argv: "list", argc: "int", *args:"any", **kwargs:"any") -> None:
     client = discord.Client(intents=discord.Intents.default());
 
     client.run("MTIwMzEzMTQ1MjM1MTU3ODEzMw.GS8r95.WNmzTab7qBshJvVrsb5XaPKzUlVR1xDB3u1g5E");
