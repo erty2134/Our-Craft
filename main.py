@@ -4,6 +4,7 @@
 import sys
 import discord
 import os
+from pollsort import inbetween
 from dotenv import find_dotenv, load_dotenv
 
 
@@ -40,20 +41,28 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
         if message.author == client.user:
             return;
         if message.content == ">>help":
-            await testChannel.send("reply to me to execute a command\n commands:\n >>version -> shows version\n >>poll -> currently being built")
+            await testChannel.send("reply to me to execute a command\n commands:\n >>version -> shows version\n >>poll -> to change title description or other values just put the value in <> and to choose which value infront of and after each > put the name of the value eg title<FOO vs BAR>title");
         
         if message.content == ">>version":
-            await testChannel.send("Version 1.0.0 Early Aplha");
+            versionEmbed = discord.Embed(title="Version", description="version is Version 1.0.0 Early Aplha", color=0x0fff0f);
+            versionEmbed.add_field(name="version", value="v1.0.0", inline=False);
+            versionEmbed.add_field(name="release date", value="future", inline=False);
+            await testChannel.send(embed=versionEmbed);
 
         if ">>poll" in str(message.content):
-            reactions = 0;
-            if "-V1" in str(message.content): reactions= 1;
-            if "-V2" in str(message.conents): reactions= 2;
-            if "-V3" in str(message.content): reactions= 3;
-            if "-V4" in str(message.content): reactions= 4;
-            if "-V5" in str(message.content): reactions= 5;
-
-            await testChannel.send(f"Poll! reactions{reactions}");
+            pollInfo = str(message.content);
+            pollDict = {
+                "title": inbetween(pollInfo,"title<",">title"),
+                "description": inbetween(pollInfo,"description<",">description"),
+                "options": inbetween(pollInfo, "options<", ">options"),
+                "announce": inbetween(pollInfo, "!<",">!")
+            };
+            pollsEmbed = discord.Embed(title="**Poll!**", description='-'+message.author.name, color=0x55ff55);
+            pollsEmbed.add_field(name="Title", value='**__'+pollDict["title"]+'__**', inline=False);
+            pollsEmbed.add_field(name="Description", value=pollDict["description"]);
+            pollsEmbed.add_field(name="Options", value=pollDict["options"]);
+            if pollDict["announce"] == "announce" or pollDict["announce"] == "!": await testChannel.send("@everyone");
+            await testChannel.send(embed=pollsEmbed);
 
     try:
         client.run(TOKEN);
