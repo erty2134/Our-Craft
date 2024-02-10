@@ -37,6 +37,10 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
     @client.event
     async def on_message(message):
         testChannel = client.get_channel(1203134153386885130);
+        if message.author == client.user:
+            if message.embeds:
+                await message.add_reaction('✅');
+                await message.add_reaction('❌');
         #sys.stdout.write(message.author);
         if message.author == client.user:
             return;
@@ -68,9 +72,6 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
         client.run(TOKEN);
     except:
         sys.stderr.write(f"incorrect token, {TOKEN}\n");
-
-
-
 
 
 if __name__ == "__main__": main(sys.argv[1:], len(sys.argv[1:]));
