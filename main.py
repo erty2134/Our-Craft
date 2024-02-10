@@ -9,8 +9,13 @@ from dotenv import find_dotenv, load_dotenv
 
 
 
-
 def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
+
+    final = bool()
+    if ("final" in ' '.join(argv)): 
+        final = bool(True);
+        if final:
+            print("final"); # debug 
 
     # load up the env
     envPath = find_dotenv();
@@ -24,19 +29,22 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
 
     @client.event
     async def on_disconect():
-        testChannel = client.get_channel(1203134153386885130);
+        if not final : testChannel = client.get_channel(1203134153386885130); 
+        else: testChannel = client.get_channel(1196141129113014444);
         await testChannel.send("Disconected DM erty11 to get the servers running again");
 
     @client.event
     async def on_ready():
-        testChannel = client.get_channel(1203134153386885130);
+        if not final : testChannel = client.get_channel(1203134153386885130);
+        else : client.get_channel(1196141129113014444);
         await testChannel.send("Hello, World!");
         await testChannel.send("'>>' is my prefix >>help to see commands");
         await testChannel.send("reply to me to execute a command");
 
     @client.event
     async def on_message(message):
-        testChannel = client.get_channel(1203134153386885130);
+        if not final : testChannel = client.get_channel(1203134153386885130);
+        else : client.get_channel(1196141129113014444);
         if message.author == client.user:
             if message.embeds:            
                 await message.add_reaction('✅');
@@ -63,7 +71,7 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
                 "announce": inbetween(pollInfo, "!<",">!"),
                 "post>>poll": pollInfo[7:]
             };
-            
+
             pollsEmbed = discord.Embed(title="**Poll!**", description='-'+message.author.name, color=0x55ff55);
             if pollDict["title"] == None:
                 pollsEmbed.add_field(name="Title", value='**__'+pollDict["post>>poll"]+'__**', inline=False);
