@@ -38,9 +38,10 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
     async def on_message(message):
         testChannel = client.get_channel(1203134153386885130);
         if message.author == client.user:
-            if message.embeds:
+            if message.embeds:            
                 await message.add_reaction('✅');
                 await message.add_reaction('❌');
+                
         #sys.stdout.write(message.author);
         if message.author == client.user:
             return;
@@ -59,14 +60,23 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
                 "title": inbetween(pollInfo,"title<",">title"),
                 "description": inbetween(pollInfo,"description<",">description"),
                 "options": inbetween(pollInfo, "options<", ">options"),
-                "announce": inbetween(pollInfo, "!<",">!")
+                "announce": inbetween(pollInfo, "!<",">!"),
+                "post>>poll": pollInfo[7:]
             };
+            
             pollsEmbed = discord.Embed(title="**Poll!**", description='-'+message.author.name, color=0x55ff55);
-            pollsEmbed.add_field(name="Title", value='**__'+pollDict["title"]+'__**', inline=False);
+            if pollDict["title"] == None:
+                pollsEmbed.add_field(name="Title", value='**__'+pollDict["post>>poll"]+'__**', inline=False);
+            else:
+                pollsEmbed.add_field(name="Title", value='**__'+pollDict["title"]+'__**', inline=False);
             pollsEmbed.add_field(name="Description", value=pollDict["description"]);
-            pollsEmbed.add_field(name="Options", value=pollDict["options"]);
+            if pollDict["options"] == None: 
+                pollsEmbed.add_field(name="Options", value="✅, ❌");
+            else:
+                pollsEmbed.add_field(name="Options", value=pollDict["options"]);
             if pollDict["announce"] == "announce" or pollDict["announce"] == "!": await testChannel.send("@everyone");
             await testChannel.send(embed=pollsEmbed);
+
 
     try:
         client.run(TOKEN);
