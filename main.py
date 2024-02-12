@@ -36,7 +36,7 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
     @client.event
     async def on_ready():
         if not final : testChannel = client.get_channel(1203134153386885130);
-        else : client.get_channel(1196141129113014444);
+        else : testChannel = client.get_channel(1196141129113014444);
         await testChannel.send("Hello, World!");
         await testChannel.send("'>>' is my prefix >>help to see commands");
         await testChannel.send("reply to me to execute a command");
@@ -44,7 +44,7 @@ def main(argv:"list", argc:"int", *args:"any", **kwargs:"any") -> None:
     @client.event
     async def on_message(message):
         if not final : testChannel = client.get_channel(1203134153386885130);
-        else : client.get_channel(1196141129113014444);
+        else : testChannel = client.get_channel(1196141129113014444);
         if message.author == client.user:
             if message.embeds:            
                 await message.add_reaction('✅');
